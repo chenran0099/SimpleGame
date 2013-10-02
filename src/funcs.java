@@ -11,8 +11,8 @@ public class funcs {
 	}
 	
 	public static void outStatus(int money, int play){
-		System.out.println("Money: $" + money);
-		System.out.println("Total play: " + play);
+		System.out.printf("Money: $%s.\n", money);
+		System.out.printf("Total play: %s\n", play);
 	}
 	
 	
@@ -22,6 +22,6 @@ public class funcs {
 		if (choice == 2)
 			System.out.println("* Your choice is 11~18.");
 		if (choice >= 3 && choice <= 18)
-			System.out.println("* Your choice is " + choice + ".");
+			System.out.printf("* Your choice is %s. \n", choice);
 	}
 }
