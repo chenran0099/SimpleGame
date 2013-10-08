@@ -2,71 +2,43 @@ import java.util.Scanner;
 public class startgame {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//variable
 		
-		int money = 1000;
-		int play = 0;
-		int userIn;
-		int randomNum;
-		int moneyChange;
-		int win = 0;
-		boolean status = true;
-		int arr[] = {0,2,2,216,72,36,21,14,10,8,8,8,8,10,14,21,36,72,216};
-		//object
-		Scanner bucky = new Scanner(System.in);
-		funcs funcObj = new funcs();
+		Scanner bucky = new Scanner(System.in);  // Scanner used for getting user input
+		Function func = new Function();  // Build-in Function class's object
 		
-		//main
-		funcObj.outStatus(money, play);
-		System.out.println("Game instruction: Please check https://github.com/maomihz.\nLET'S PLAY.\n*********************\n");
-		while(money > 0){
-			System.out.printf("Money: $%d\n", money);
-			do {
-				System.out.print("Which number you bet>>");
-				userIn = bucky.nextInt();
-				System.out.print("How much you bet>>");
-				moneyChange = bucky.nextInt();
-
-				if (userIn <= 0 || userIn > 18 || moneyChange > money){
-					System.out.println("input wrong, please retry.");
-					continue;
-				}
-				if (userIn == 0) {
-					System.out.println("Cheat enabled, money+++");
-					money += moneyChange;
-					System.out.printf("Money = %d", money);
-				} else {
-					money -= moneyChange/10 + 1;
-					money -= moneyChange;
-					System.out.printf("Money: $%d(-$%d).\n", money, moneyChange + moneyChange / 10 + 1);
-					break;
-				}
-					
-			} while (true);
-			
-			
-			randomNum = funcObj.getRandom();
-			if ((userIn == 1 && randomNum <= 10) || (userIn == 2 && randomNum > 10) || (userIn >= 3 && userIn <= 18 && userIn == randomNum)){
-				moneyChange *= arr[userIn];
-				money += moneyChange;
-				win += moneyChange;
-				funcObj.outChoice(userIn);
-				status = true;
-				System.out.printf("* You win, the number is %d\n", randomNum);
-			} else {
-				funcObj.outChoice(userIn);
-				status = false;
-				System.out.printf("* You lose, the number is %d\n", randomNum);
+		// Get player number
+		System.out.print("How many player? ==> ");  
+		int playerNumber = bucky.nextInt();
+		
+		// create player array
+		Player[] playerList = new Player[playerNumber];
+		
+		// set name for each player
+		for(int i=0;i<playerList.length;i++){
+			System.out.printf("Please enter <Player %d> name ==> ", i+1);
+			String name = bucky.nextLine();
+			if (i == 0){
+				name = bucky.nextLine();
 			}
-
-			
-			
-			play++;
-			funcObj.outStatus(money, play, status, moneyChange);
-			System.out.print("\n\n\n*********************\n");
+			playerList[i] = new Player(name);
 		}
-		System.out.printf("GAME OVER\nYour score is: %d\n", win);
+		System.out.println("\n\n********************\n\n");
+		
+		boolean continuePlay = true;
+		while (continuePlay){
+			for (Player x:playerList) {
+				if(x.getMoney() > 0)
+					continuePlay = true;
+				else
+					continuePlay = false;
+			}
+			func.play(playerList);
+			System.out.println();
+			func.judge(playerList);
+			System.out.println();
+		}
+		System.out.println("===Game Over===");
+		func.score(playerList);
 		
 	}
 
